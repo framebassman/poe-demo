@@ -25,4 +25,9 @@ build-backend = "poetry.core.masonry.api"
 [tool.poe.tasks]
 test = "pytest"
 build = "poetry build"
-_publish = "poetry publish"
+_databricks-cli-version = "databricks --version"
+deploy = ["build", "_publish", "_databricks-cli-version"]
+
+[tool.poe.tasks._publish]
+cmd = "echo $POE_DEMO_ENV_VARIABLE"
+envfile = ".env"
