@@ -8,6 +8,8 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "pytest (>=8.3.4,<9.0.0)",
+    "pyhamcrest (>=2.1.0,<3.0.0)"
 ]
 
 [project.scripts]
@@ -16,7 +18,11 @@ start = "poe_demo:main"
 [tool.poetry]
 packages = [{include = "poe_demo", from = "src"}]
 
-
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+test = "pytest"
+build = "poetry build"
+_publish = "poetry publish"
