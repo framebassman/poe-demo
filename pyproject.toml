@@ -1,33 +1,44 @@
-[project]
+[tool.poetry]
 name = "poe-demo"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Dmitry Romashov",email = "framebassman@gmail.com"}
-]
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "pytest (>=8.3.4,<9.0.0)",
-    "pyhamcrest (>=2.1.0,<3.0.0)"
-]
 
-[project.scripts]
-start = "poe_demo:main"
+[tool.poetry.dependencies]
+python = "^3.9"
+pytest = "^8.3.5"
+pyhamcrest = "^2.1.0"
+allure-pytest = "^2.13.5"
+pytest-xdist = "^3.6.1"
 
-[tool.poetry]
-packages = [{include = "poe_demo", from = "src"}]
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.33.0"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
-test = "pytest"
-build = "poetry build"
-_databricks-cli-version = "databricks --version"
-deploy = ["build", "_publish", "_databricks-cli-version"]
+test = "pytest tests"
 
-[tool.poe.tasks._publish]
-cmd = "echo $POE_DEMO_ENV_VARIABLE"
-envfile = ".env"
+[tool.poe.tasks.serve]
+cmd = "poe_demo.index:main"
+args = [
+  { name = "host", default = "localhost" },
+  { name = "port", default = "9000" }
+]
+
+[tool.poe.tasks.start]
+script = "poe_demo.index:main"
+
+[tool.pytest.ini_options]
+addopts = "--alluredir=allure-results --junitxml=junit/test-results.xml --numprocesses=2"
+#log_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+#log_date_format="%Y-%m-%d %H:%M:%S"
+#log_cli = 1
+#log_cli_level = "INFO"
+#log_file = "pytest.log"
+#log_file_level = "INFO"
+
